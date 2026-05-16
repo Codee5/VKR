@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% set active = "students" %}
+{% block title %}{{ "Редактировать" if student else "Добавить учащегося" }}{% endblock %}
+{% block content %}
+<div class="card" style="max-width:560px">
+  <div class="card-header">Данные учащегося</div>
+  <div class="card-body">
+    <form method="post">
+      <div class="mb-3"><label class="form-label">ФИО</label>
+        <input name="fullname" class="form-control" required value="{{ student.stud_fullname if student else '' }}"></div>
+      <div class="mb-3"><label class="form-label">Группа</label>
+        <select name="group_id" class="form-select">
+          {% for g in groups %}<option value="{{ g.group_id }}" {{ 'selected' if student and student.group_id==g.group_id }}>{{ g.group_name }} ({{ g.class_num }} класс)</option>{% endfor %}
+        </select></div>
+      <div class="mb-3"><label class="form-label">Психотип</label>
+        <select name="psychotype" class="form-select">
+          {% for t in ['Экстраверт','Амбиверт','Интроверт','Не определён'] %}
+            <option {{ 'selected' if student and student.psychotype==t }}>{{ t }}</option>{% endfor %}
+        </select></div>
+      <div class="mb-3"><label class="form-label">Психологическая характеристика</label>
+        <textarea name="psyh_info" class="form-control" rows="3">{{ student.stud_psyh_info if student else '' }}</textarea></div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-primary">Сохранить</button>
+        <a href="/students" class="btn btn-outline-secondary">Отмена</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

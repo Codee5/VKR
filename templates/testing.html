@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% set active = "testing" %}
+{% block title %}Групповые тестирования{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <span class="text-muted" style="font-size:13px">Тестирований: <b>{{ tests|length }}</b></span>
+  <a href="/testing/add" class="btn btn-primary btn-sm">+ Провести тестирование</a>
+</div>
+<div class="card">
+  <div class="card-header">Журнал тестирований</div>
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead><tr><th>Дата</th><th>Группа</th><th>Методика</th><th>Результатов</th><th>Действие</th></tr></thead>
+      <tbody>
+      {% for t in tests %}
+      <tr>
+        <td style="color:#666;font-size:13px">{{ t.test_date }}</td>
+        <td><span class="badge bg-secondary">{{ t.group_name }}</span></td>
+        <td>{{ t.methodology }}</td>
+        <td class="text-center"><span class="badge" style="background:#e2efda;color:#375623">{{ t.result_count }}</span></td>
+        <td><a href="/testing/{{ t.test_id }}" class="btn btn-sm btn-outline-secondary">Результаты</a></td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

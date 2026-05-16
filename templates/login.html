@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Вход — ИС Психолога</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+<style>
+  body { background: #ede8e3; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  .login-card { background: #fff; border-radius: 10px; padding: 40px 36px; width: 360px; border: 1px solid #ddd8d2; box-shadow: 0 4px 20px rgba(0,0,0,.08); }
+  .logo { text-align: center; margin-bottom: 24px; }
+  .logo h4 { color: #4a3f38; font-weight: 700; margin-bottom: 4px; }
+  .logo small { color: #888; font-size: 12px; }
+  .form-control { border-color: #ccc8c3; background: #f8f6f3; }
+  .form-control:focus { border-color: #4a3f38; box-shadow: 0 0 0 2px rgba(74,63,56,.15); background: #fff; }
+  .btn-login { background: #4a3f38; color: #fff; width: 100%; padding: 10px; font-weight: 600; border: none; border-radius: 6px; }
+  .btn-login:hover { background: #3a302a; }
+  .hint { font-size: 11px; color: #aaa; text-align: center; margin-top: 16px; }
+</style>
+</head>
+<body>
+<div class="login-card">
+  <div class="logo">
+    <div style="font-size:40px;margin-bottom:8px">🧠</div>
+    <h4>ИС мониторинга<br>психологического состояния</h4>
+    <small>ГБОУ Школа №1533 «ЛИТ»</small>
+  </div>
+  {% with msgs = get_flashed_messages() %}{% if msgs %}
+    <div class="alert alert-danger py-2">{{ msgs[0] }}</div>
+  {% endif %}{% endwith %}
+  <form method="post">
+    <div class="mb-3">
+      <label class="form-label" style="font-size:12px;color:#666;text-transform:uppercase;letter-spacing:.5px">Логин</label>
+      <input name="username" class="form-control" placeholder="psycholog" value="psycholog">
+    </div>
+    <div class="mb-3">
+      <label class="form-label" style="font-size:12px;color:#666;text-transform:uppercase;letter-spacing:.5px">Пароль</label>
+      <input name="password" type="password" class="form-control" placeholder="••••••••" value="lit1533">
+    </div>
+    <button class="btn-login">Войти в систему</button>
+  </form>
+  <div class="hint">Логин: psycholog &nbsp;|&nbsp; Пароль: lit1533</div>
+</div>
+</body>
+</html>

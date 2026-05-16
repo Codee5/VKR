@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% set active = "students" %}
+{% block title %}Ученики{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <span class="text-muted" style="font-size:13px">Всего: <b>{{ students|length }}</b> учащихся</span>
+  <a href="/students/add" class="btn btn-primary btn-sm">+ Добавить учащегося</a>
+</div>
+<div class="card">
+  <div class="card-header">Список учащихся</div>
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead><tr>
+        <th>№</th><th>ФИО учащегося</th><th>Группа</th><th>Психотип</th>
+        <th>Характеристика</th><th>Консультаций</th><th>Состояние</th>
+      </tr></thead>
+      <tbody>
+      {% for s in students %}
+      <tr>
+        <td class="text-muted" style="font-size:12px">{{ loop.index }}</td>
+        <td><b>{{ s.stud_fullname }}</b></td>
+        <td><span class="badge bg-secondary">{{ s.group_name }}</span></td>
+        <td>{{ s.psychotype }}</td>
+        <td style="font-size:12px;color:#666;max-width:200px">{{ (s.stud_psyh_info or '')[:60] }}</td>
+        <td class="text-center">
+          {% if s.cons_count > 0 %}
+            <span class="badge" style="background:#ffd0cc;color:#8b1a10">{{ s.cons_count }}</span>
+          {% else %}<span class="text-muted">—</span>{% endif %}
+        </td>
+        <td>
+          {% if s.is_healthy %}<span class="badge bg-success">Норма</span>
+          {% else %}<span class="badge bg-danger">Требует внимания</span>{% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

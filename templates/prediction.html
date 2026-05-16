@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% set active = "prediction" %}
+{% block title %}Прогнозирование психологического риска{% endblock %}
+{% block content %}
+<div class="row g-4">
+  <!-- Form -->
+  <div class="col-md-5">
+    <div class="card">
+      <div class="card-header">Параметры прогноза</div>
+      <div class="card-body">
+        <form method="post" action="/prediction/run">
+          <div class="mb-3">
+            <label class="form-label" style="font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:#888">Учащийся</label>
+            <select name="stud_id" class="form-select">
+              {% for s in students %}
+              <option value="{{ s.stud_id }}" {{ 'selected' if result and student and student.stud_id==s.stud_id }}>{{ s.stud_fullname }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="alert py-2" style="background:#f0ede9;font-size:12px;color:#666;border:none">
+            ⚙️ Метод: Дерево решений (Gini, max_depth=5)<br>
+            📊 Признаки: x1–x7 (тревожность, консультации, динамика, кластер, психотип, типы проблем, класс)
+            {% if result and result.f1 %}<br>📈 F1-мера модели: <b>{{ result.f1 }}</b>{% endif %}
+          </div>
+          <button class="btn btn-primary w-100">🔮 Рассчитать прогноз</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div class="card mt-3">
+      <div class="card-header">Последние обращения</div>
+      <div class="card-body p-0">
+        <table class="table table-sm mb-0">
+          <thead><tr><th>Учащийся</th><th>Дата</th><th>Проблема</th></tr></thead>
+          <tbody>
+          {% for h in history %}
+          <tr>
+            <td style="font-size:12px">{{ h.stud_fullname.split()[0] }} {{ h.stud_fullname.split()[1] }}</td>
+            <td style="font-size:12px;color:#888">{{ h.ind_date }}</td>
+            <td style="font-size:11px">{{ h.problem[:25] }}{% if h.problem|length > 25 %}…{% endif %}</td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <div class="col-md-7">
+    {% if result %}
+    <div class="card mb-3">
+      <div class="card-header">Результат прогноза — {{ student.stud_fullname }}</div>
+      <div class="card-body">
+        <!-- Vp + Risk -->
+        <div class="d-flex align-items-center gap-4 mb-3"
+             style="background:{% if result.color=='success' %}#e2efda{% elif result.color=='warning' %}#fff2cc{% else %}#ffe6e6{% endif %};border-radius:8px;padding:16px">
+          <div class="vp-display" style="color:{% if result.color=='success' %}#375623{% elif result.color=='warning' %}#7a5c00{% else %}#8b1a10{% endif %}">
+            {{ result.vp }}
+          </div>
+          <div>
+            <div class="badge fs-6 mb-2
+              {% if result.color=='success' %}text-bg-success
+              {% elif result.color=='warning' %}text-bg-warning
+              {% else %}text-bg-danger{% endif %}">
+              {{ result.risk }} риск
+            </div>
+            <!-- Risk bar -->
+            <div class="risk-bar" style="width:220px">
+              <div class="risk-fill" style="width:{{ (result.vp * 100)|int }}%;
+                background:{% if result.color=='success' %}#70ad47{% elif result.color=='warning' %}#ffd966{% else %}#ff4444{% endif %}"></div>
+            </div>
+            <div class="d-flex justify-content-between mt-1" style="font-size:10px;color:#888;width:220px">
+              <span>Низкий</span><span>Умеренный</span><span>Критический</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Features -->
+        <div class="mb-3">
+          <div style="font-size:12px;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Ключевые признаки</div>
+          <div class="d-flex flex-wrap gap-2">
+            {% for k, v in result.features.items() %}
+            <span class="badge" style="background:#f0ede9;color:#4a3f38;font-size:11px;font-weight:500">
+              {{ k }}: <b>{{ v }}</b>
+            </span>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Recommendation -->
+        <div style="background:#fff5f4;border-left:3px solid
+          {% if result.color=='success' %}#70ad47{% elif result.color=='warning' %}#ffd966{% else %}#c0392b{% endif %};
+          padding:10px 14px;border-radius:0 4px 4px 0;font-size:13px;color:#333">
+          <b>⚠ Рекомендация:</b> {{ result.recommendation }}
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div class="card">
+      <div class="card-body text-center py-5" style="color:#aaa">
+        <div style="font-size:48px;margin-bottom:12px">🔮</div>
+        <p>Выберите учащегося и нажмите<br>«Рассчитать прогноз»</p>
+        <small>Алгоритм: Дерево решений · Критерий Джини · max_depth=5<br>
+        Формула нормализации: x' = (x - x_min) / (x_max - x_min)</small>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

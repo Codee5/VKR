@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ИС мониторинга психологического состояния учащихся</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+<style>
+  body { background: #f0ede9; font-family: 'Segoe UI', sans-serif; }
+  .sidebar { background: #2d2520; min-height: 100vh; width: 220px; position: fixed; top: 0; left: 0; padding-top: 20px; }
+  .sidebar .brand { color: #fff; font-size: 13px; font-weight: 600; padding: 10px 16px 20px; border-bottom: 1px solid #4a3f38; margin-bottom: 10px; }
+  .sidebar a { display: block; color: #b8a99e; text-decoration: none; padding: 9px 16px; font-size: 13px; border-radius: 4px; margin: 2px 8px; }
+  .sidebar a:hover, .sidebar a.active { background: #4a3f38; color: #fff; }
+  .sidebar .icon { margin-right: 8px; }
+  .main { margin-left: 220px; padding: 24px; }
+  .topbar { background: #4a3f38; color: #fff; padding: 10px 20px; margin: -24px -24px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .topbar h5 { margin: 0; font-size: 15px; }
+  .card { border: 1px solid #ddd8d2; border-radius: 6px; }
+  .card-header { background: #f8f6f3; border-bottom: 1px solid #ddd8d2; font-weight: 600; font-size: 14px; color: #4a3f38; }
+  .badge-cluster-1 { background: #c8edcf; color: #2e6b3e; }
+  .badge-cluster-2 { background: #fff2b3; color: #7a5c00; }
+  .badge-cluster-3 { background: #ffd0cc; color: #8b1a10; }
+  .stat-card { background: #fff; border-radius: 8px; border: 1px solid #ddd8d2; padding: 16px; }
+  .stat-card .num { font-size: 32px; font-weight: 700; color: #4a3f38; }
+  .stat-card .lbl { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: .5px; }
+  .btn-primary { background: #4a3f38; border-color: #4a3f38; }
+  .btn-primary:hover { background: #3a302a; border-color: #3a302a; }
+  .table th { background: #f0ede9; font-size: 12px; text-transform: uppercase; letter-spacing: .4px; color: #4a3f38; }
+  .vp-display { font-size: 52px; font-weight: 700; line-height: 1; }
+  .risk-bar { height: 10px; border-radius: 6px; background: #e8e3df; }
+  .risk-fill { height: 100%; border-radius: 6px; }
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="brand">🧠 ИС Психолога<br><small style="color:#7a6a62;font-weight:400">ГБОУ Школа №1533 ЛИТ</small></div>
+  <a href="/students" class="{% if active=='students' %}active{% endif %}"><span class="icon">👤</span>Ученики</a>
+  <a href="/consultations" class="{% if active=='consultations' %}active{% endif %}"><span class="icon">💬</span>Консультации</a>
+  <a href="/testing" class="{% if active=='testing' %}active{% endif %}"><span class="icon">📋</span>Тестирования</a>
+  <a href="/reports" class="{% if active=='reports' %}active{% endif %}"><span class="icon">📊</span>Отчёты</a>
+  <a href="/prediction" class="{% if active=='prediction' %}active{% endif %}"><span class="icon">🔮</span>Прогнозирование</a>
+  <div style="position:absolute;bottom:16px;left:0;right:0;padding:0 16px">
+    <a href="/" style="color:#7a6a62;font-size:12px">⬅ Выход</a>
+  </div>
+</div>
+<div class="main">
+  <div class="topbar">
+    <h5>{% block title %}{% endblock %}</h5>
+    <small>Педагог-психолог: Иванова А.В.</small>
+  </div>
+  {% with msgs = get_flashed_messages() %}{% if msgs %}
+    {% for m in msgs %}<div class="alert alert-success alert-dismissible mb-3">{{ m }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>{% endfor %}
+  {% endif %}{% endwith %}
+  {% block content %}{% endblock %}
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

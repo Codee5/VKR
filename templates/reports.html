@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% set active = "reports" %}
+{% block title %}Аналитические отчёты{% endblock %}
+{% block content %}
+<!-- Stats row -->
+<div class="row g-3 mb-4">
+  {% for label, val, color in [
+    ('Всего учащихся', stats.total, '#4a3f38'),
+    ('Консультаций', stats.n_cons, '#2e75b6'),
+    ('Тестирований', stats.n_tests, '#375623'),
+    ('Доля группы риска', stats.dr|string + '%', '#8b1a10')
+  ] %}
+  <div class="col-md-3">
+    <div class="stat-card">
+      <div class="num" style="color:{{ color }}">{{ val }}</div>
+      <div class="lbl">{{ label }}</div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Charts -->
+<div class="row g-3 mb-4">
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-header">Распределение по кластерам тревожности</div>
+      <div class="card-body text-center">
+        {% if chart1 %}<img src="data:image/png;base64,{{ chart1 }}" class="img-fluid">
+        {% else %}<p class="text-muted mt-4">Нет данных тестирований</p>{% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-header">Основные психологические проблемы</div>
+      <div class="card-body text-center">
+        {% if chart2 %}<img src="data:image/png;base64,{{ chart2 }}" class="img-fluid">
+        {% else %}<p class="text-muted mt-4">Нет данных консультаций</p>{% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Health table -->
+<div class="card">
+  <div class="card-header">Психологическое здоровье учащихся</div>
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead><tr><th>ФИО учащегося</th><th>Психотип</th><th>Проблемы</th><th>Рекомендации</th><th>Состояние</th></tr></thead>
+      <tbody>
+      {% for row in health_data %}
+      <tr>
+        <td><b>{{ row.stud_fullname }}</b></td>
+        <td><span class="badge bg-secondary">{{ row.psychotype }}</span></td>
+        <td style="font-size:12px">{{ row.problems or '—' }}</td>
+        <td style="font-size:12px;color:#555">{{ row.recommend or '—' }}</td>
+        <td>
+          {% if row.is_healthy %}<span class="badge bg-success">Норма</span>
+          {% else %}<span class="badge bg-danger">Внимание</span>{% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

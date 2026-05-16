@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% set active = "testing" %}
+{% block title %}Результаты тестирования — {{ test.methodology }}{% endblock %}
+{% block content %}
+<div class="mb-3 text-muted" style="font-size:13px">
+  Группа: <b>{{ test.group_name }}</b> &nbsp;|&nbsp; Дата: <b>{{ test.test_date }}</b> &nbsp;|&nbsp; Методика: <b>{{ test.methodology }}</b>
+</div>
+<div class="card">
+  <div class="card-header">Результаты по учащимся</div>
+  <div class="card-body p-0">
+    <table class="table mb-0">
+      <thead><tr><th>№</th><th>ФИО учащегося</th><th>Балл тревожности</th><th>Результат</th><th>Кластер</th></tr></thead>
+      <tbody>
+      {% for r in results %}
+      <tr>
+        <td class="text-muted">{{ loop.index }}</td>
+        <td>{{ r.stud_fullname }}</td>
+        <td><b>{{ r.anxiety_score }}</b></td>
+        <td>
+          {% if r.cluster == 1 %}<span class="badge badge-cluster-1">{{ r.result_meaning }}</span>
+          {% elif r.cluster == 2 %}<span class="badge badge-cluster-2">{{ r.result_meaning }}</span>
+          {% else %}<span class="badge badge-cluster-3">{{ r.result_meaning }}</span>{% endif %}
+        </td>
+        <td class="text-center text-muted">{{ r.cluster }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<a href="/testing" class="btn btn-outline-secondary btn-sm mt-3">← Назад</a>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% set active = "testing" %}
+{% block title %}Новое тестирование{% endblock %}
+{% block content %}
+<div class="card" style="max-width:520px">
+  <div class="card-header">Провести групповое тестирование</div>
+  <div class="card-body">
+    <form method="post">
+      <div class="mb-3"><label class="form-label">Группа</label>
+        <select name="group_id" class="form-select">
+          {% for g in groups %}<option value="{{ g.group_id }}">{{ g.group_name }} ({{ g.class_num }} класс)</option>{% endfor %}
+        </select></div>
+      <div class="mb-3"><label class="form-label">Методика</label>
+        <select name="methodology" class="form-select">
+          {% for m in methods %}<option>{{ m }}</option>{% endfor %}
+        </select></div>
+      <div class="mb-3"><label class="form-label">Дата проведения</label>
+        <input name="test_date" type="date" class="form-control" value="2025-05-01"></div>
+      <div class="alert alert-info py-2" style="font-size:12px">
+        💡 В MVP результаты генерируются автоматически для демонстрации алгоритма кластеризации
+      </div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-primary">Провести и сохранить</button>
+        <a href="/testing" class="btn btn-outline-secondary">Отмена</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
