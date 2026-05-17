@@ -116,7 +116,7 @@ def testing_detail(test_id):
 def add_testing():
     conn = get_db()
     groups = conn.execute('SELECT * FROM school_group ORDER BY class_num').fetchall()
-    METHODS = ['Шкала тревоги Бека', 'Тест Пономаренко', 'CCT R.Goodman', 'СМОЛ']
+    METHODS = ['Шкала тревоги Бека', 'Тест Пономаренко', 'CCT R.Goodman']
     if request.method == 'POST':
         gid = request.form['group_id']
         conn.execute(

@@ -88,16 +88,17 @@ def gini_impurity(y):
 
 
 class SimpleDecisionTree:
-    """Simple Decision Tree for binary classification (max_depth=5, criterion=gini)."""
-    def __init__(self, max_depth=5):
+    def __init__(self, max_depth=5, min_samples_leaf=2):
         self.max_depth = max_depth
-        self.tree = None
+        self.min_samples_leaf = min_samples_leaf
 
     def fit(self, X, y):
         self.tree = self._build(X, y, depth=0)
 
     def _build(self, X, y, depth):
-        if depth >= self.max_depth or len(set(y)) == 1 or len(y) < 2:
+        if (depth >= self.max_depth 
+            or len(set(y)) == 1 
+            or len(y) < self.min_samples_leaf * 2):
             return {'leaf': True, 'prob': float(np.mean(y))}
 
         best_feat, best_thresh, best_gini = None, None, float('inf')
