@@ -68,31 +68,6 @@
 
 ---
 
-## Быстрый старт
-
-### Требования
-- Python 3.10+
-- pip
-
-### Установка и запуск
-
-```bash
-git clone https://github.com/Codee5/psych-system-mvp.git
-cd psych-system-mvp
-pip install -r requirements.txt
-python app.py
-```
-
-Открыть в браузере: **http://localhost:5050**
-
-```
-Логин:  psycholog
-Пароль: lit1533
-```
-
-При первом запуске база данных создаётся автоматически и заполняется тестовыми данными: 10 учащихся, 2 тестирования, 10 консультаций.
-
----
 
 ## Структура проекта
 
